@@ -28,7 +28,13 @@ class ResourceRequirement:
 class CWLWorkflow:
     def __init__(self, cwl, workflow_id):
         self.raw_cwl = cwl
-        self.cwl = load_document_by_yaml(cwl, "io://")
+        parsed_cwl = load_document_by_yaml(cwl, "io://")
+
+        # Ensure self.cwl is always a list
+        if not isinstance(parsed_cwl, list):
+            parsed_cwl = [parsed_cwl]
+
+        self.cwl = parsed_cwl
         self.workflow_id = workflow_id
 
     def get_version(self):

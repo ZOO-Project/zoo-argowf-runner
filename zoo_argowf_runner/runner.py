@@ -5,26 +5,19 @@ from loguru import logger
 import os
 from typing import Union
 from zoo_argowf_runner.handlers import ExecutionHandler
-from zoo_argowf_runner.argo_api import Execution
+# from zoo_argowf_runner.argo_api import Execution
 from zoo_argowf_runner.zoo_helpers import ZooConf, ZooInputs, ZooOutputs, CWLWorkflow
 from zoo_argowf_runner.volume import VolumeTemplates
 
-try:
-    import zoo
-except ImportError:
+import sys
 
-    class ZooStub(object):
-        def __init__(self):
-            self.SERVICE_SUCCEEDED = 3
-            self.SERVICE_FAILED = 4
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../zoo-runner-common')))
 
-        def update_status(self, conf, progress):
-            print(f"Status {progress}")
+from zoostub import ZooStub
+zoo = ZooStub()
 
-        def _(self, message):
-            print(f"invoked _ with {message}")
+from base_runner import BaseRunner
 
-    zoo = ZooStub()
 
 
 class ZooArgoWorkflowsRunner:
@@ -74,7 +67,7 @@ class ZooArgoWorkflowsRunner:
         )
 
         if max_cores == 0:
-            max_cores = int(os.environ.get("DEFAULT_MAX_CORES"), 4)
+            max_cores = int(os.environ.get("DEFAULT_MAX_CORES", "4"))
         logger.info(f"max cores: {max_cores}")
 
         return max_cores
@@ -85,7 +78,7 @@ class ZooArgoWorkflowsRunner:
         max_ram = max(max(resources["ramMin"] or [0]), max(resources["ramMax"] or [0]))
 
         if max_ram == 0:
-            max_ram = int(os.environ.get("DEFAULT_MAX_RAM"), 4096)
+            max_ram = int(os.environ.get("DEFAULT_MAX_RAM", "4096"))
         logger.info(f"max RAM: {max_ram}Mi")
 
         return f"{max_ram}Mi"
