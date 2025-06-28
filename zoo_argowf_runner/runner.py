@@ -5,7 +5,7 @@ from loguru import logger
 import os
 from typing import Union
 from zoo_argowf_runner.handlers import ExecutionHandler
-# from zoo_argowf_runner.argo_api import Execution
+from zoo_argowf_runner.argo_api import Execution
 from zoo_argowf_runner.zoo_helpers import ZooConf, ZooInputs, ZooOutputs, CWLWorkflow
 from zoo_argowf_runner.volume import VolumeTemplates
 
