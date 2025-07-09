@@ -14,7 +14,7 @@ dependencies = [
     "hera",
     "cwl-utils",
     "click",
-    "cwl-utils==0.14",
+    "cwl-utils>=0.14",
     "attrs",
     "loguru"
 ]
@@ -29,7 +29,7 @@ dependencies = [
     "hera",
     "cwl-utils",
     "click",
-    "cwl-utils==0.14",
+    "cwl-utils>=0.14",
     "attrs",
     "loguru"
 ]
@@ -41,7 +41,7 @@ dependencies = [
     "hera",
     "cwl-utils",
     "click",
-    "cwl-utils==0.14",
+    "cwl-utils>=0.14",
     "attrs",
     "loguru"
 ]
