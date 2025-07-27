@@ -4,7 +4,9 @@ import uuid
 from loguru import logger
 import os
 from typing import Union
-from zoo_argowf_runner.handlers import ExecutionHandler
+#from zoo_argowf_runner.handlers import ExecutionHandler
+
+
 from zoo_argowf_runner.argo_api import Execution
 # from zoo_argowf_runner.zoo_helpers import ZooConf, ZooInputs, ZooOutputs, CWLWorkflow
 from zoo_conf import ZooConf, ZooInputs, ZooOutputs, CWLWorkflow
@@ -13,7 +15,7 @@ from zoo_argowf_runner.volume import VolumeTemplates
 import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../zoo-runner-common')))
-
+from base_handler import ExecutionHandler
 from zoostub import ZooStub
 zoo = ZooStub()
 
