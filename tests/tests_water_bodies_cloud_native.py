@@ -42,7 +42,7 @@ class TestWaterBodiesCloudNativeService(unittest.TestCase):
         conf["lenv"] = {"message": "", "Identifier": "water-bodies", "usid": "def-1234"}
         conf["tmpPath"] = "/tmp"
         conf["main"] = {"tmpUrl": "http://localhost/logs/"}
-        conf["auth_env"] = {"user": "ns1"}
+        conf["argo"] = {"namespace": "ns1"}
         cls.conf = conf
 
         inputs = {
