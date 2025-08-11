@@ -154,7 +154,7 @@ class ZooArgoWorkflowsRunner:
         self.update_status(progress=15, message="upload required files")
 
         self.execution = Execution(
-            namespace=self.zoo_conf.conf["auth_env"]["user"],
+            namespace=self.zoo_conf.conf["argo"]["namespace"],
             workflow=self.cwl,
             entrypoint=self.get_workflow_id(),
             workflow_name=self.get_workflow_uid(),

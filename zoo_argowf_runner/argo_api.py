@@ -117,6 +117,8 @@ class Execution:
         def progress_to_percentage(progress: str) -> int:
             """Convert progress string (e.g., '2/10') to percentage."""
             completed, total = map(int, progress.split("/"))
+            if total == 0:
+                return 0
             return int((completed / total) * 100)
 
         while True:
