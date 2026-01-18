@@ -17,18 +17,8 @@ from zoo_argowf_runner.volume import VolumeTemplates
 try:
     import zoo
 except ImportError:
-
-    class ZooStub(object):
-        def __init__(self):
-            self.SERVICE_SUCCEEDED = 3
-            self.SERVICE_FAILED = 4
-
-        def update_status(self, conf, progress):
-            print(f"Status {progress}")
-
-        def _(self, message):
-            print(f"invoked _ with {message}")
-
+    # Use centralized ZooStub from zoo-runner-common package
+    from zoostub import ZooStub
     zoo = ZooStub()
 
 
