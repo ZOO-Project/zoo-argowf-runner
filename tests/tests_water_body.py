@@ -43,6 +43,7 @@ class TestWaterBodiesService(unittest.TestCase):
         conf["tmpPath"] = "/tmp"
         conf["main"] = {"tmpUrl": "http://localhost/logs/"}
         conf["argo"] = {"namespace": "ns1"}
+        conf["workflow_id"] = "water-bodies"
         cls.conf = conf
 
         inputs = {

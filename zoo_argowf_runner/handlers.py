@@ -1,42 +1,12 @@
-# Description: This file contains the abstract class for the execution handler.
-# TODO move to zoo-runners package
-from abc import ABC, abstractmethod
+"""Execution Handler for Argo Workflows.
 
+Re-exports ExecutionHandler from zoo-runner-common.
+"""
 
-class ExecutionHandler(ABC):
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
-        self.job_id = None
+# Add zoo-runner-common to path
+# import os
+# import sys
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../zoo-runner-common')))
+from handlers import ExecutionHandler
 
-    def set_job_id(self, job_id):
-        self.job_id = job_id
-
-    @abstractmethod
-    def pre_execution_hook(self, **kwargs):
-        pass
-
-    @abstractmethod
-    def post_execution_hook(self, **kwargs):
-        pass
-
-    @abstractmethod
-    def get_secrets(self):
-        pass
-
-    @abstractmethod
-    def get_pod_env_vars(self):
-        pass
-
-    @abstractmethod
-    def get_pod_node_selector(self):
-        pass
-
-    @abstractmethod
-    def handle_outputs(
-        self, execution_log, output, usage_report, tool_logs=None, **kwargs
-    ):
-        pass
-
-    @abstractmethod
-    def get_additional_parameters(self):
-        pass
+__all__ = ['ExecutionHandler']

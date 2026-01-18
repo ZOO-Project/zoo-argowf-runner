@@ -27,6 +27,9 @@ except ImportError:
 
 
 class ArgoWFRunnerExecutionHandler(ExecutionHandler):
+    def __init__(self, conf):
+        self.conf = conf
+
     def get_pod_env_vars(self):
         # sets two env vars in the pod launched by Calrissian
         return {"A": "1", "B": "1"}
