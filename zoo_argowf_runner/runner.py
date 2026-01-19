@@ -8,8 +8,8 @@ from typing import Union
 # Add zoo-runner-common to path
 # import sys
 # sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../zoo-runner-common')))
-from base_runner import BaseRunner
-from handlers import ExecutionHandler
+from zoo_runner_common.base_runner import BaseRunner
+from zoo_runner_common.handlers import ExecutionHandler
 
 from zoo_argowf_runner.argo_api import Execution
 from zoo_argowf_runner.volume import VolumeTemplates
