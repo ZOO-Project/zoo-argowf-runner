@@ -10,11 +10,12 @@ readme = "README.md"
 requires-python = ">=3.8"
 
 dependencies = [
+    "zoo-runner-common",
     "PyYAML",
     "hera",
     "cwl-utils",
     "click",
-    "cwl-utils==0.14",
+    "cwl-utils>=0.14",
     "attrs",
     "loguru"
 ]
@@ -25,23 +26,25 @@ path = "zoo_argowf_runner/__about__.py"
 
 [tool.hatch.envs.default]
 dependencies = [
+    "zoo-runner-common",
     "PyYAML",
     "hera",
     "cwl-utils",
     "click",
-    "cwl-utils==0.14",
+    "cwl-utils>=0.14",
     "attrs",
     "loguru"
 ]
 
 [tool.hatch.envs.test]
 dependencies = [
+    "zoo-runner-common",
     "nose2",
     "PyYAML",
     "hera",
     "cwl-utils",
     "click",
-    "cwl-utils==0.14",
+    "cwl-utils>=0.14",
     "attrs",
     "loguru"
 ]

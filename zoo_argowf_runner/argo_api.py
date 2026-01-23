@@ -27,6 +27,8 @@ class Execution:
         max_ram: int,
         storage_class: str,
         handler: Callable,
+        tmp_path: str,
+        usid: str,
     ) -> None:
         """
         Initialize the execution class with workflow and execution parameters.
@@ -52,6 +54,8 @@ class Execution:
         self.max_ram = max_ram
         self.storage_class = storage_class
         self.handler = handler
+        self.tmp_path = tmp_path
+        self.usid = usid
 
         self.token = os.environ.get("ARGO_WF_TOKEN", None)
 
@@ -113,6 +117,8 @@ class Execution:
         def progress_to_percentage(progress: str) -> int:
             """Convert progress string (e.g., '2/10') to percentage."""
             completed, total = map(int, progress.split("/"))
+            if total == 0:
+                return 0
             return int((completed / total) * 100)
 
         while True:
@@ -230,7 +236,9 @@ class Execution:
             response = requests.get(
                 f"{self.workflows_service}/artifact-files/{self.namespace}/workflows/{self.workflow_name}/{self.workflow_name}/outputs/tool-logs/{child.get('name')}.log"
             )
-            with open(f"{child.get('name')}.log", "w") as f:
+            if not(os.path.exists(os.path.join(self.tmp_path,f"{self.entrypoint}-{self.usid}"))):
+                os.mkdir(os.path.join(self.tmp_path,f"{self.entrypoint}-{self.usid}"))
+            with open(os.path.join(self.tmp_path,f"{self.entrypoint}-{self.usid}",f"{child.get('name')}.log"), "w") as f:
                 f.write(response.text)
             tool_logs.append(f"{child.get('name')}.log")
 
