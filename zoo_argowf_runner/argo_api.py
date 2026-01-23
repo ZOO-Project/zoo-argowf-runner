@@ -7,8 +7,7 @@ from hera.workflows import WorkflowsService
 from loguru import logger
 import time
 from zoo_argowf_runner.cwl2argo import cwl_to_argo
-from zoo_argowf_runner.zoo_helpers import CWLWorkflow
-
+from zoo_runner_common.zoo_conf import CWLWorkflow
 
 class Execution:
     """

@@ -12,7 +12,7 @@ from hera.workflows.models import (
 )
 
 from zoo_argowf_runner.template import WorkflowTemplates
-from zoo_argowf_runner.zoo_helpers import CWLWorkflow
+from zoo_runner_common.zoo_conf import CWLWorkflow
 from zoo_argowf_runner.volume import VolumeTemplates
 
 
