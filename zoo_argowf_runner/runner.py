@@ -4,30 +4,25 @@ import uuid
 from loguru import logger
 import os
 from typing import Union
-from zoo_argowf_runner.handlers import ExecutionHandler
+
+# Add zoo-runner-common to path
+# import sys
+# sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../zoo-runner-common')))
+from zoo_runner_common.base_runner import BaseRunner
+from zoo_runner_common.handlers import ExecutionHandler
+
 from zoo_argowf_runner.argo_api import Execution
-from zoo_argowf_runner.zoo_helpers import ZooConf, ZooInputs, ZooOutputs, CWLWorkflow
 from zoo_argowf_runner.volume import VolumeTemplates
 
 try:
     import zoo
 except ImportError:
-
-    class ZooStub(object):
-        def __init__(self):
-            self.SERVICE_SUCCEEDED = 3
-            self.SERVICE_FAILED = 4
-
-        def update_status(self, conf, progress):
-            print(f"Status {progress}")
-
-        def _(self, message):
-            print(f"invoked _ with {message}")
-
+    # Use centralized ZooStub from zoo-runner-common package
+    from zoostub import ZooStub
     zoo = ZooStub()
 
 
-class ZooArgoWorkflowsRunner:
+class ZooArgoWorkflowsRunner(BaseRunner):
     def __init__(
         self,
         cwl,
@@ -36,85 +31,26 @@ class ZooArgoWorkflowsRunner:
         outputs,
         execution_handler: Union[ExecutionHandler, None] = None,
     ):
-        self.zoo_conf = ZooConf(conf)
-        self.inputs = ZooInputs(inputs)
-        self.outputs = ZooOutputs(outputs)
-        self.cwl = CWLWorkflow(cwl, self.zoo_conf.workflow_id)
+        # BaseRunner.__init__ creates: self.conf, self.inputs, self.outputs, self.workflow
+        super().__init__(cwl, inputs, conf, outputs, execution_handler)
 
-        self.handler = execution_handler
+        # Alias for backward compatibility
+        self.handler = self.execution_handler
+        self.zoo_conf = self.conf
+        self.cwl = self.workflow  # Alias for CWLWorkflow
 
         self.storage_class = os.environ.get("STORAGE_CLASS", "standard")
         self.monitor_interval = 30
 
-    def get_volume_size(self) -> str:
-        """returns volume size that the pods share"""
-
-        resources = self.cwl.eval_resource()
-
-        # TODO how to determine the "right" volume size
-        volume_size = max(
-            max(resources["tmpdirMin"] or [0]), max(resources["tmpdirMax"] or [0])
-        ) + max(max(resources["outdirMin"] or [0]), max(resources["outdirMax"] or [0]))
-
-        if volume_size == 0:
-            volume_size = os.environ.get("DEFAULT_VOLUME_SIZE", "10Gi")
-        else:
-            volume_size = f"{volume_size}Mi"
-
-        logger.info(f"volume_size: {volume_size}")
-
-        return f"{volume_size}"
-
-    def get_max_cores(self) -> int:
-        """returns the maximum number of cores that pods can use"""
-        resources = self.cwl.eval_resource()
-
-        max_cores = max(
-            max(resources["coresMin"] or [0]), max(resources["coresMax"] or [0])
-        )
-
-        if max_cores == 0:
-            max_cores = int(os.environ.get("DEFAULT_MAX_CORES"), 4)
-        logger.info(f"max cores: {max_cores}")
-
-        return max_cores
-
-    def get_max_ram(self) -> str:
-        """returns the maximum RAM that pods can use"""
-        resources = self.cwl.eval_resource()
-        max_ram = max(max(resources["ramMin"] or [0]), max(resources["ramMax"] or [0]))
-
-        if max_ram == 0:
-            max_ram = int(os.environ.get("DEFAULT_MAX_RAM"), 4096)
-        logger.info(f"max RAM: {max_ram}Mi")
-
-        return f"{max_ram}Mi"
-
-    def update_status(self, progress: int, message: str = None) -> None:
-        """updates the execution progress (%) and provides an optional message"""
-        if message:
-            self.zoo_conf.conf["lenv"]["message"] = message
-
-        zoo.update_status(self.zoo_conf.conf, progress)
-
-    def get_workflow_id(self):
-        """returns the workflow id (CWL entry point)"""
-        return self.zoo_conf.workflow_id
-
-    def get_processing_parameters(self):
-        """Gets the processing parameters from the zoo inputs"""
-        return self.inputs.get_processing_parameters()
-
-    def get_workflow_inputs(self, mandatory=False):
-        """Returns the CWL workflow inputs"""
-        return self.cwl.get_workflow_inputs(mandatory=mandatory)
-
-    def assert_parameters(self):
-        """checks all mandatory processing parameters were provided"""
-        return all(
-            elem in list(self.get_processing_parameters().keys())
-            for elem in self.get_workflow_inputs(mandatory=True)
-        )
+    # Note: The following methods are now inherited from BaseRunner:
+    # - get_volume_size()
+    # - get_max_cores()
+    # - get_max_ram()
+    # - update_status()
+    # - get_workflow_id()
+    # - get_processing_parameters()
+    # - get_workflow_inputs()
+    # - assert_parameters()
 
     def get_workflow_uid(self):
         """returns the workflow unique identifier"""
@@ -131,6 +67,13 @@ class ZooArgoWorkflowsRunner:
             f"{str(self.zoo_conf.workflow_id).replace('_', '-')}-"
             f"{str(datetime.now().timestamp()).replace('.', '')}-{uuid.uuid4()}"
         )
+
+    def wrap(self):
+        """
+        Wrap method for compatibility with BaseRunner.
+        Argo Workflows runner doesn't use wrapping.
+        """
+        pass
 
     def execute(self):
         self.update_status(progress=3, message="Pre-execution hook")
