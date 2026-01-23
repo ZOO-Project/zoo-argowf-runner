@@ -1,7 +1,5 @@
 # zoo-argowf-runner
 
-**Version consolidée - Janvier 2026**
-
 Zoo runner using Argo Workflows
 
 ## 🔗 Dependencies
