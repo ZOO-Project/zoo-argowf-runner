@@ -1,6 +1,6 @@
 # zoo-argowf-runner
 
-Zoo runner using Argo Workflows
+ZOO-Project runner using Argo Workflows
 
 ## 🔗 Dependencies
 

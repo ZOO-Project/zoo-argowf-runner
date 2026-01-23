@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "zoo-argowf-runner"
-description = "Zoo runner using Argo Workflows to process an Application Package encoded in CWL."
+description = "ZOO-Projecr runner using Argo Workflows to process an Application Package encoded in CWL."
 dynamic = ["version"]
 readme = "README.md"
 requires-python = ">=3.8"
