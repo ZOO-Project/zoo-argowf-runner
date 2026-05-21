@@ -6,6 +6,7 @@ import cwl_utils
 from cwl_utils.parser import load_document_by_yaml
 import cwl_utils.__meta__ as cwl_meta
 
+
 # useful class for hints in CWL
 @attr.s
 class ResourceRequirement:
@@ -31,7 +32,9 @@ class CWLWorkflow:
         if cwl_meta.__version__ < "0.16":
             self.cwl = load_document_by_yaml(cwl, "io://")
         else:
-            self.cwl = load_document_by_yaml(cwl, "io://", id_=workflow_id, load_all=True)
+            self.cwl = load_document_by_yaml(
+                cwl, "io://", id_=workflow_id, load_all=True
+            )
         self.workflow_id = workflow_id
 
     def get_version(self):

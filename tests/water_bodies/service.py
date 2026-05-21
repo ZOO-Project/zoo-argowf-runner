@@ -11,6 +11,7 @@ try:
 except ImportError:
     # Use centralized ZooStub from zoo-runner-common package
     from zoo_runner_common.zoostub import ZooStub
+
     zoo = ZooStub()
 
 
