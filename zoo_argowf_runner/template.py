@@ -2,7 +2,6 @@
 from __future__ import annotations
 from hera.workflows import (
     Workflow,
-    Steps,
 )
 
 from hera.workflows.models import (

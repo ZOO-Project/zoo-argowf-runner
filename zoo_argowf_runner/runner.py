@@ -164,8 +164,7 @@ class ZooArgoWorkflowsRunner(BaseRunner):
         log = self.execution.get_log()
         usage_report = self.execution.get_usage_report()
         tool_logs = self.execution.get_tool_logs()
-        stac_catalog = self.execution.get_stac_catalog()
-        feature_collection = self.execution.get_feature_collection()
+
 
         self.outputs.set_output(output)
 
