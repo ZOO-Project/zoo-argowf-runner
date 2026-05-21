@@ -66,6 +66,7 @@ jobs:
         run: hatch build
 
       - name: Publish to PyPI (trusted publishing)
+        if: github.event_name == 'release'
         uses: pypa/gh-action-pypi-publish@release/v1
 
       - name: Create GitHub Release (manual trigger)
