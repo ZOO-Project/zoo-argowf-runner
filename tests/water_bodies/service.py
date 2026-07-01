@@ -1,5 +1,3 @@
-import base64
-import json
 import os
 import pathlib
 from loguru import logger
@@ -13,6 +11,7 @@ try:
 except ImportError:
     # Use centralized ZooStub from zoo-runner-common package
     from zoo_runner_common.zoostub import ZooStub
+
     zoo = ZooStub()
 
 

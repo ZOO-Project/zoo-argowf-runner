@@ -2,7 +2,6 @@
 from __future__ import annotations
 from hera.workflows import (
     Workflow,
-    Steps,
 )
 
 from hera.workflows.models import (
@@ -122,13 +121,17 @@ class WorkflowTemplates:
         Returns:
             Template: A workflow template object.
         """
-        steps = [ParallelSteps(__root__=[sub]) for sub in sub_steps] if sub_steps else None
+        steps = (
+            [ParallelSteps(__root__=[sub]) for sub in sub_steps] if sub_steps else None
+        )
 
         inputs = Inputs()
         outputs = Outputs()
 
         if isinstance(inputs_parameters, List):
-            inputs.parameters = [Parameter(name=elem["name"]) for elem in inputs_parameters]
+            inputs.parameters = [
+                Parameter(name=elem["name"]) for elem in inputs_parameters
+            ]
         elif isinstance(inputs_parameters, Inputs):
             inputs = inputs_parameters
 
@@ -203,7 +206,10 @@ class WorkflowTemplates:
         Returns:
             Workflow: A fully constructed workflow object.
         """
-        arguments = [Parameter(name=key, value=str(value)) for key, value in (inputs or {}).items()]
+        arguments = [
+            Parameter(name=key, value=str(value))
+            for key, value in (inputs or {}).items()
+        ]
 
         volumes = []
         if secret_volume:

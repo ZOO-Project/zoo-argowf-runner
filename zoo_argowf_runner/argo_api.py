@@ -9,6 +9,7 @@ import time
 from zoo_argowf_runner.cwl2argo import cwl_to_argo
 from zoo_runner_common.zoo_conf import CWLWorkflow
 
+
 class Execution:
     """
     Handles the execution of workflows using the Hera Workflows library and Argo Workflows API.
@@ -104,8 +105,10 @@ class Execution:
         else:
             print(f"Failed to retrieve workflow status: {response.status_code}")
             return None
-    
-    def monitor(self, interval: int = 30, update_function: Optional[Callable] = None) -> None:
+
+    def monitor(
+        self, interval: int = 30, update_function: Optional[Callable] = None
+    ) -> None:
         """
         Monitor the execution of the workflow and update the progress.
 
@@ -139,11 +142,12 @@ class Execution:
                     logger.info(workflow_status.get("status", {}).get("progress"))
                     progress = workflow_status.get("status", {}).get("progress", "0/1")
                     percentage = progress_to_percentage(progress)
-                    update_function(percentage, "Argo Workflows is handling the execution")
+                    update_function(
+                        percentage, "Argo Workflows is handling the execution"
+                    )
 
                 # Check if the workflow has completed
                 if status in ["Succeeded"]:
-
                     self.completed = True
                     self.successful = True
                     break
@@ -167,7 +171,7 @@ class Execution:
 
         if self.get_execution_output_parameter("outcome") == "failure":
             self.successful = False
-        
+
         return self.successful
 
     def get_execution_output_parameter(self, output_parameter_name: str):
@@ -235,9 +239,20 @@ class Execution:
             response = requests.get(
                 f"{self.workflows_service}/artifact-files/{self.namespace}/workflows/{self.workflow_name}/{self.workflow_name}/outputs/tool-logs/{child.get('name')}.log"
             )
-            if not(os.path.exists(os.path.join(self.tmp_path,f"{self.entrypoint}-{self.usid}"))):
-                os.mkdir(os.path.join(self.tmp_path,f"{self.entrypoint}-{self.usid}"))
-            with open(os.path.join(self.tmp_path,f"{self.entrypoint}-{self.usid}",f"{child.get('name')}.log"), "w") as f:
+            if not (
+                os.path.exists(
+                    os.path.join(self.tmp_path, f"{self.entrypoint}-{self.usid}")
+                )
+            ):
+                os.mkdir(os.path.join(self.tmp_path, f"{self.entrypoint}-{self.usid}"))
+            with open(
+                os.path.join(
+                    self.tmp_path,
+                    f"{self.entrypoint}-{self.usid}",
+                    f"{child.get('name')}.log",
+                ),
+                "w",
+            ) as f:
                 f.write(response.text)
             tool_logs.append(f"{child.get('name')}.log")
 

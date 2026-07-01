@@ -19,6 +19,7 @@ try:
 except ImportError:
     # Use centralized ZooStub from zoo-runner-common package
     from zoostub import ZooStub
+
     zoo = ZooStub()
 
 
@@ -127,7 +128,9 @@ class ZooArgoWorkflowsRunner(BaseRunner):
         ]
 
         additional_secrets = [
-            VolumeTemplates.create_secret_volume(name="usersettings-vol", secret_name="user-settings")
+            VolumeTemplates.create_secret_volume(
+                name="usersettings-vol", secret_name="user-settings"
+            )
         ]
 
         self.execution.run(
@@ -164,8 +167,6 @@ class ZooArgoWorkflowsRunner(BaseRunner):
         log = self.execution.get_log()
         usage_report = self.execution.get_usage_report()
         tool_logs = self.execution.get_tool_logs()
-        stac_catalog = self.execution.get_stac_catalog()
-        feature_collection = self.execution.get_feature_collection()
 
         self.outputs.set_output(output)
 
@@ -188,7 +189,7 @@ class ZooArgoWorkflowsRunner(BaseRunner):
 
         self.update_status(
             progress=100,
-            message=f'execution {"failed" if exit_value == zoo.SERVICE_FAILED else "successful"}',
+            message=f"execution {'failed' if exit_value == zoo.SERVICE_FAILED else 'successful'}",
         )
 
         return exit_value
