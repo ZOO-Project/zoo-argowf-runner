@@ -7,7 +7,6 @@ on:
       - feature/**
       - develop
       - main
-      - "feature/update(zoo-argowf-runner)" 
     tags:
       - v*.*.*
   pull_request:
