@@ -9,6 +9,7 @@ import time
 from zoo_argowf_runner.cwl2argo import cwl_to_argo
 from zoo_runner_common.zoo_conf import CWLWorkflow
 
+
 class Execution:
     """
     Handles the execution of workflows using the Hera Workflows library and Argo Workflows API.
