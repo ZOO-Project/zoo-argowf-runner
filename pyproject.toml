@@ -8,6 +8,17 @@ description = "ZOO-Projecr runner using Argo Workflows to process an Application
 dynamic = ["version"]
 readme = "README.md"
 requires-python = ">=3.8"
+license = "Apache-2.0"
+keywords = ["zoo-project", "cwl", "argo-workflows", "eoepca", "workflow"]
+authors = [
+    { name = "ZOO-Project" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+]
 
 dependencies = [
     "zoo-runner-common",
@@ -20,6 +31,10 @@ dependencies = [
     "loguru"
 ]
 
+[project.urls]
+Homepage = "https://github.com/ZOO-Project/zoo-argowf-runner"
+Repository = "https://github.com/ZOO-Project/zoo-argowf-runner"
+Documentation = "https://github.com/ZOO-Project/zoo-argowf-runner#readme"
 
 [tool.hatch.version]
 path = "zoo_argowf_runner/__about__.py"
@@ -39,7 +54,8 @@ dependencies = [
 [tool.hatch.envs.test]
 dependencies = [
     "zoo-runner-common",
-    "nose2",
+    "pytest",
+    "pytest-cov",
     "PyYAML",
     "hera",
     "cwl-utils",
@@ -48,3 +64,7 @@ dependencies = [
     "attrs",
     "loguru"
 ]
+
+[tool.hatch.envs.test.scripts]
+test = "pytest {args}"
+test-q = "pytest -q {args}"

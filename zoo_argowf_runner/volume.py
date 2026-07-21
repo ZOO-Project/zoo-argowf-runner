@@ -14,6 +14,7 @@ from hera.workflows.models import (
     Volume,
 )
 
+
 class VolumeTemplates:
     """
     A collection of utility methods for creating volume templates for Argo workflows.
@@ -73,7 +74,11 @@ class VolumeTemplates:
 
     @staticmethod
     def create_config_map_volume(
-        name: str, config_map_name: str, items: List[Dict[str, str]], default_mode: int, optional: bool
+        name: str,
+        config_map_name: str,
+        items: List[Dict[str, str]],
+        default_mode: int,
+        optional: bool,
     ) -> Volume:
         """
         Creates a volume from a Kubernetes ConfigMap.
@@ -126,5 +131,7 @@ class VolumeTemplates:
 
         return Volume(
             name=name,
-            persistent_volume_claim=PersistentVolumeClaimVolumeSource(claim_name=claim_name),
+            persistent_volume_claim=PersistentVolumeClaimVolumeSource(
+                claim_name=claim_name
+            ),
         )

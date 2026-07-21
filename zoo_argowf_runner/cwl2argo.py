@@ -194,7 +194,7 @@ with open("/tmp/cwl_parameters.json", "w") as f:
                 command=["python"],
                 source=prepare_content,
             ),
-        )
+        ),
     ]
 
     synchro = WorkflowTemplates.create_synchronization(
