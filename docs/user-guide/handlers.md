@@ -45,7 +45,10 @@ Pass it in when constructing the runner:
 
 ```python
 runner = ZooArgoWorkflowsRunner(
-    cwl=cwl, conf=conf, inputs=inputs, outputs=outputs,
+    cwl=cwl,
+    conf=conf,
+    inputs=inputs,
+    outputs=outputs,
     execution_handler=MyExecutionHandler(conf=conf),
 )
 ```
