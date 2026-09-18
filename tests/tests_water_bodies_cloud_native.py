@@ -7,7 +7,7 @@ from tests.water_bodies_cloud_native.service import water_bodies
 class TestWaterBodiesCloudNativeService(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        class ZooStub(object):
+        class ZooStub:
             def __init__(self):
                 self.SERVICE_SUCCEEDED = 3
                 self.SERVICE_FAILED = 4
@@ -52,7 +52,7 @@ class TestWaterBodiesCloudNativeService(unittest.TestCase):
             "epsg": {"value": "EPSG:4326"},
             "stac_items": {
                 "value": [
-                    "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2A_10TFK_20210708_0_L2A",  # noqa
+                    "https://earth-search.aws.element84.com/v1/collections/sentinel-2-l2a/items/S2A_10TFK_20210708_0_L2A",
                 ]
             },
         }

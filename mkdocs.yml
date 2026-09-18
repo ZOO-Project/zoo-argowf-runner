@@ -1,0 +1,70 @@
+site_name: zoo-argowf-runner
+site_description: ZOO-Project runner using Argo Workflows
+site_author: ZOO-Project
+repo_url: https://github.com/ZOO-Project/zoo-argowf-runner
+repo_name: ZOO-Project/zoo-argowf-runner
+edit_uri: blob/develop/docs/
+site_url: https://zoo-project.github.io/zoo-argowf-runner/
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Getting Started:
+      - Installation: getting-started/installation.md
+      - Quick Start: getting-started/quickstart.md
+  - User Guide:
+      - Runner: user-guide/runner.md
+      - Handlers: user-guide/handlers.md
+  - API Reference:
+      - Runner: api/runner.md
+      - Handlers: api/handlers.md
+  - Development:
+      - Contributing: development/contributing.md
+  - About:
+      - Changelog: about/changelog.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            show_root_heading: true
+            show_root_full_path: false
+            docstring_style: google

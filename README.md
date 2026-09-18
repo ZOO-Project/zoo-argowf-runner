@@ -1,6 +1,6 @@
 # zoo-argowf-runner
 
-Zoo runner using Argo Workflows
+ZOO-Project runner using Argo Workflows
 
 ## 🔗 Dependencies
 
@@ -149,8 +149,13 @@ The
 config_map_volume(
     name="cwl-wrapper-config-vol",
     configMapName="cwl-wrapper-config",
-    items=[{"key": "main.yaml"}, {"key": "rules.yaml"}, {"key": "stage-in.yaml"}, {"key": "stage-out.yaml"}],
+    items=[
+        {"key": "main.yaml"},
+        {"key": "rules.yaml"},
+        {"key": "stage-in.yaml"},
+        {"key": "stage-out.yaml"},
+    ],
     defaultMode=420,
-    optional=False
+    optional=False,
 )
 ```
