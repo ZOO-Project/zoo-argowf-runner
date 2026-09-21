@@ -1,8 +1,6 @@
 # Description: This file contains the functions to generate the Argo workflow templates.
 from __future__ import annotations
 
-from typing import List
-
 from hera.workflows import (
     Workflow,
 )
@@ -127,14 +125,14 @@ class WorkflowTemplates:
         inputs = Inputs()
         outputs = Outputs()
 
-        if isinstance(inputs_parameters, List):
+        if isinstance(inputs_parameters, list):
             inputs.parameters = [
                 Parameter(name=elem["name"]) for elem in inputs_parameters
             ]
         elif isinstance(inputs_parameters, Inputs):
             inputs = inputs_parameters
 
-        if isinstance(inputs_artifacts, List):
+        if isinstance(inputs_artifacts, list):
             inputs.artifacts = [
                 Artifact(name=elem["name"], from_expression=elem.get("from_expression"))
                 for elem in inputs_artifacts
@@ -142,7 +140,7 @@ class WorkflowTemplates:
         elif isinstance(inputs_artifacts, Inputs):
             inputs = inputs_artifacts
 
-        if isinstance(outputs_parameters, List):
+        if isinstance(outputs_parameters, list):
             parameters = [
                 Parameter(
                     name=elem["name"],
@@ -156,7 +154,7 @@ class WorkflowTemplates:
         elif isinstance(outputs_parameters, Outputs):
             outputs = outputs_parameters
 
-        if isinstance(outputs_artifacts, List):
+        if isinstance(outputs_artifacts, list):
             outputs.artifacts = [
                 Artifact(name=elem["name"], from_expression=elem.get("from_expression"))
                 for elem in outputs_artifacts

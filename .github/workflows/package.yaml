@@ -40,7 +40,7 @@ jobs:
           cache: pip
 
       - name: Install tooling
-        run: pip install hatch ruff
+        run: pip install hatch ruff==0.16.8
 
       - name: Ruff Check
         run: ruff check .

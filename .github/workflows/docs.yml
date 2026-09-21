@@ -1,4 +1,4 @@
-name: Deploy Docs
+name: Build and Deploy Documentation
 
 on:
   push:
@@ -6,22 +6,31 @@ on:
       - main
       - develop
 
+permissions:
+  contents: write
+
 jobs:
-  build:
-    name: Deploy docs to GitHub Pages
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build
-        uses: Tiryoh/actions-mkdocs@v0
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          mkdocs_version: 'latest'
-          requirements: 'requirements.txt'
-          configfile: 'mkdocs.yml'
+          python-version: '3.11'
 
-      - name: Deploy
+      - name: Install package and doc dependencies
+        run: |
+          pip install .
+          pip install -r requirements.txt
+
+      - name: Build documentation
+        run: mkdocs build
+
+      - name: Deploy to GitHub Pages
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

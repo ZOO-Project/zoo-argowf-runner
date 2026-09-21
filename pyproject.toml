@@ -7,7 +7,7 @@ name = "zoo-argowf-runner"
 description = "ZOO-Projecr runner using Argo Workflows to process an Application Package encoded in CWL."
 dynamic = ["version"]
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = "Apache-2.0"
 keywords = ["zoo-project", "cwl", "argo-workflows", "eoepca", "workflow"]
 authors = [
