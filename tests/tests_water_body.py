@@ -7,7 +7,7 @@ from tests.water_bodies.service import water_bodies
 class TestWaterBodiesService(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        class ZooStub(object):
+        class ZooStub:
             def __init__(self):
                 self.SERVICE_SUCCEEDED = 3
                 self.SERVICE_FAILED = 4
@@ -51,7 +51,7 @@ class TestWaterBodiesService(unittest.TestCase):
             "bands": {"value": ["green", "nir08"]},
             "epsg": {"value": "EPSG:4326"},
             "item": {
-                "value": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/landsat-c2-l2/items/LC09_L2SP_042033_20231015_02_T1"  # noqa
+                "value": "https://planetarycomputer.microsoft.com/api/stac/v1/collections/landsat-c2-l2/items/LC09_L2SP_042033_20231015_02_T1"
             },
         }
 

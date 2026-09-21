@@ -1,10 +1,9 @@
 # Description: This file contains the functions to generate the Argo workflow templates.
 from __future__ import annotations
+
 from hera.workflows import (
     Workflow,
-    Steps,
 )
-
 from hera.workflows.models import (
     Arguments,
     Artifact,
@@ -24,9 +23,6 @@ from hera.workflows.models import (
     WorkflowStep,
 )
 
-from typing import Optional, Union
-from typing import List, Dict
-
 
 class WorkflowTemplates:
     """
@@ -37,8 +33,8 @@ class WorkflowTemplates:
     def create_synchronization(
         sync_type: str,
         config_map_ref_key: str,
-        config_map_ref_name: Optional[str] = None,
-        optional: Optional[bool] = None,
+        config_map_ref_name: str | None = None,
+        optional: bool | None = None,
     ) -> Synchronization:
         """
         Creates a synchronization object.
@@ -64,12 +60,12 @@ class WorkflowTemplates:
     @staticmethod
     def create_workflow_step(
         name: str,
-        parameters: Optional[List[Parameter]] = None,
-        artifacts: Optional[List[Artifact]] = None,
-        template: Optional[str] = None,
-        template_ref: Optional[TemplateRef] = None,
-        continue_on: Optional[Dict] = None,
-        when: Optional[str] = None,
+        parameters: list[Parameter] | None = None,
+        artifacts: list[Artifact] | None = None,
+        template: str | None = None,
+        template_ref: TemplateRef | None = None,
+        continue_on: dict | None = None,
+        when: str | None = None,
     ) -> WorkflowStep:
         """
         Creates a workflow step.
@@ -100,12 +96,12 @@ class WorkflowTemplates:
     @staticmethod
     def create_template(
         name: str,
-        sub_steps: Optional[List[WorkflowStep]] = None,
-        inputs_parameters: Optional[Union[List[Dict], Inputs]] = None,
-        inputs_artifacts: Optional[Union[List[Dict], Inputs]] = None,
-        outputs_parameters: Optional[Union[List[Dict], Outputs]] = None,
-        outputs_artifacts: Optional[Union[List[Dict], Outputs]] = None,
-        script: Optional[ScriptTemplate] = None,
+        sub_steps: list[WorkflowStep] | None = None,
+        inputs_parameters: list[dict] | Inputs | None = None,
+        inputs_artifacts: list[dict] | Inputs | None = None,
+        outputs_parameters: list[dict] | Outputs | None = None,
+        outputs_artifacts: list[dict] | Outputs | None = None,
+        script: ScriptTemplate | None = None,
     ) -> Template:
         """
         Creates a template for a workflow.
@@ -122,17 +118,21 @@ class WorkflowTemplates:
         Returns:
             Template: A workflow template object.
         """
-        steps = [ParallelSteps(__root__=[sub]) for sub in sub_steps] if sub_steps else None
+        steps = (
+            [ParallelSteps(__root__=[sub]) for sub in sub_steps] if sub_steps else None
+        )
 
         inputs = Inputs()
         outputs = Outputs()
 
-        if isinstance(inputs_parameters, List):
-            inputs.parameters = [Parameter(name=elem["name"]) for elem in inputs_parameters]
+        if isinstance(inputs_parameters, list):
+            inputs.parameters = [
+                Parameter(name=elem["name"]) for elem in inputs_parameters
+            ]
         elif isinstance(inputs_parameters, Inputs):
             inputs = inputs_parameters
 
-        if isinstance(inputs_artifacts, List):
+        if isinstance(inputs_artifacts, list):
             inputs.artifacts = [
                 Artifact(name=elem["name"], from_expression=elem.get("from_expression"))
                 for elem in inputs_artifacts
@@ -140,7 +140,7 @@ class WorkflowTemplates:
         elif isinstance(inputs_artifacts, Inputs):
             inputs = inputs_artifacts
 
-        if isinstance(outputs_parameters, List):
+        if isinstance(outputs_parameters, list):
             parameters = [
                 Parameter(
                     name=elem["name"],
@@ -154,7 +154,7 @@ class WorkflowTemplates:
         elif isinstance(outputs_parameters, Outputs):
             outputs = outputs_parameters
 
-        if isinstance(outputs_artifacts, List):
+        if isinstance(outputs_artifacts, list):
             outputs.artifacts = [
                 Artifact(name=elem["name"], from_expression=elem.get("from_expression"))
                 for elem in outputs_artifacts
@@ -174,15 +174,15 @@ class WorkflowTemplates:
     def generate_workflow(
         name: str,
         entrypoint: str,
-        service_account_name: Optional[str] = None,
-        annotations: Optional[Dict] = None,
-        inputs: Optional[Dict] = None,
-        synchronization: Optional[Synchronization] = None,
-        volume_claim_template: Optional[List[PersistentVolumeClaim]] = None,
-        secret_volume: Optional[List[Volume]] = None,
-        config_map_volume: Optional[List[Volume]] = None,
-        templates: Optional[List[Template]] = None,
-        namespace: Optional[str] = None,
+        service_account_name: str | None = None,
+        annotations: dict | None = None,
+        inputs: dict | None = None,
+        synchronization: Synchronization | None = None,
+        volume_claim_template: list[PersistentVolumeClaim] | None = None,
+        secret_volume: list[Volume] | None = None,
+        config_map_volume: list[Volume] | None = None,
+        templates: list[Template] | None = None,
+        namespace: str | None = None,
     ) -> Workflow:
         """
         Generates an Argo Workflow.
@@ -203,7 +203,10 @@ class WorkflowTemplates:
         Returns:
             Workflow: A fully constructed workflow object.
         """
-        arguments = [Parameter(name=key, value=str(value)) for key, value in (inputs or {}).items()]
+        arguments = [
+            Parameter(name=key, value=str(value))
+            for key, value in (inputs or {}).items()
+        ]
 
         volumes = []
         if secret_volume:

@@ -1,7 +1,8 @@
 # Description: This file contains the function to convert a CWL workflow to an Argo workflow.
 from __future__ import annotations
+
+import json
 import os
-from typing import Optional
 
 from hera.workflows.models import (
     Parameter,
@@ -10,9 +11,9 @@ from hera.workflows.models import (
     ScriptTemplate,
     TemplateRef,
 )
+from zoo_runner_common.zoo_conf import CWLWorkflow
 
 from zoo_argowf_runner.template import WorkflowTemplates
-from zoo_argowf_runner.zoo_helpers import CWLWorkflow
 from zoo_argowf_runner.volume import VolumeTemplates
 
 
@@ -20,12 +21,12 @@ def cwl_to_argo(
     workflow: CWLWorkflow,
     entrypoint: str,
     argo_wf_name: str,
-    inputs: Optional[dict] = None,
-    volume_size: Optional[str] = "10Gi",
-    max_cores: Optional[int] = 4,
-    max_ram: Optional[str] = "4Gi",
-    storage_class: Optional[str] = "standard",
-    namespace: Optional[str] = "default",
+    inputs: dict | None = None,
+    volume_size: str | None = "10Gi",
+    max_cores: int | None = 4,
+    max_ram: str | None = "4Gi",
+    storage_class: str | None = "standard",
+    namespace: str | None = "default",
     **kwargs,
 ):
     """
@@ -49,7 +50,7 @@ def cwl_to_argo(
     prepare_content = f"""
 import json
 
-content = json.loads(\"\"\"{workflow.raw_cwl}\"\"\".replace("'", '"'))
+content = json.loads({json.dumps(json.dumps(workflow.raw_cwl))})
 
 inputs = "{{{{inputs.parameters.inputs}}}}"
 
@@ -188,13 +189,13 @@ with open("/tmp/cwl_parameters.json", "w") as f:
             script=ScriptTemplate(
                 image="docker.io/library/python:3.9",
                 resources=ResourceRequirements(
-                    requests={"memory": Quantity(__root__="1Gi"), "cpu": int(1)}
+                    requests={"memory": Quantity(__root__="1Gi"), "cpu": 1}
                 ),
                 volume_mounts=[],
                 command=["python"],
                 source=prepare_content,
             ),
-        )
+        ),
     ]
 
     synchro = WorkflowTemplates.create_synchronization(
