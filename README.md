@@ -6,13 +6,6 @@ ZOO-Project runner using Argo Workflows
 
 This runner now uses **[zoo-runner-common](https://github.com/ZOO-Project/zoo-runner-common)** for shared functionality, eliminating ~361 lines of duplicated code (including complete removal of `zoo_helpers.py`).
 
-**Key changes:**
-- ✅ Inherits from `BaseRunner` for common methods
-- ✅ `zoo_helpers.py` completely removed (was 271 lines)
-- ✅ Uses shared `ZooConf`, `ZooInputs`, `ZooOutputs`, `CWLWorkflow` classes
-- ✅ Implements `ExecutionHandler` interface from zoo-runner-common
-- ✅ Focuses only on Argo Workflows-specific logic
-
 ## Installation
 
 Install with zoo-runner-common dependency:
